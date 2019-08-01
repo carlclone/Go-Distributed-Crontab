@@ -1,0 +1,4 @@
+package: github.com/carlclone/Go-Distributed-Crontab
+import:
+- package: github.com/gorhill/cronexpr
+  version: ^1.0.0
