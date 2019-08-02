@@ -3,6 +3,7 @@ package master
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"github.com/carlclone/Go-Distributed-Crontab/common"
 	"github.com/coreos/etcd/clientv3"
 	"github.com/coreos/etcd/mvcc/mvccpb"
@@ -84,6 +85,7 @@ func (jobMgr *JobMgr) SaveJob(job *common.Job) (oldJob *common.Job, err error) {
 		}
 		oldJob = &oldJobObj
 	}
+	fmt.Println("save job finished")
 	return
 }
 
@@ -112,6 +114,7 @@ func (jobMgr *JobMgr) DeleteJob(name string) (oldJob *common.Job, err error) {
 		}
 		oldJob = &oldJobObj
 	}
+	fmt.Println("delete job finished")
 	return
 }
 
@@ -145,6 +148,7 @@ func (jobMgr *JobMgr) ListJobs() (jobList []*common.Job, err error) {
 		}
 		jobList = append(jobList, job)
 	}
+	fmt.Println("listing jobs")
 	return
 }
 
