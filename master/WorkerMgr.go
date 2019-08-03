@@ -19,27 +19,6 @@ var (
 	G_workerMgr *WorkerMgr
 )
 
-func (workerMgr *WorkerMgr) ListWorkers() (workerArr []string, err error) {
-	var (
-		getResp  *clientv3.GetResponse
-		kv       *mvccpb.KeyValue
-		workerIP string
-	)
-
-	workerArr = make([]string, 0)
-
-	if getResp, err = workerMgr.kv.Get(context.TODO(), common.JOB_WORKER_DIR, clientv3.WithPrefix()); err != nil {
-		return
-	}
-
-	for _, kv = range getResp.Kvs {
-		workerIP = common.ExtractWorkerIP(string(kv.Key))
-		workerArr = append(workerArr, workerIP)
-	}
-	return
-
-}
-
 func InitWorkerMgr() (err error) {
 	var (
 		config clientv3.Config
@@ -69,4 +48,25 @@ func InitWorkerMgr() (err error) {
 		lease:  lease,
 	}
 	return
+}
+
+func (workerMgr *WorkerMgr) ListWorkers() (workerArr []string, err error) {
+	var (
+		getResp  *clientv3.GetResponse
+		kv       *mvccpb.KeyValue
+		workerIP string
+	)
+
+	workerArr = make([]string, 0)
+
+	if getResp, err = workerMgr.kv.Get(context.TODO(), common.JOB_WORKER_DIR, clientv3.WithPrefix()); err != nil {
+		return
+	}
+
+	for _, kv = range getResp.Kvs {
+		workerIP = common.ExtractWorkerIP(string(kv.Key))
+		workerArr = append(workerArr, workerIP)
+	}
+	return
+
 }
