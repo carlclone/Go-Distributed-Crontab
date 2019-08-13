@@ -34,7 +34,7 @@ func main() {
 		goto ERR
 	}
 
-	//
+	//worker管理 , 目前只有查功能
 	//if err = master.InitWorkerMgr(); err != nil {
 	//	goto ERR
 	//}
