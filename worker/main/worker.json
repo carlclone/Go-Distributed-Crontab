@@ -6,5 +6,6 @@
   "etcd的连接超时": "单位毫秒",
   "etcdDialTimeout": 5000,
 
+  "MongodbUri": 123
 
 }

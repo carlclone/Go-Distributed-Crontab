@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/carlclone/Go-Distributed-Crontab/master"
+	"github.com/carlclone/Go-Distributed-Crontab/worker"
 	"runtime"
 	"time"
 )
@@ -13,7 +13,7 @@ var (
 )
 
 func initArgs() {
-	flag.StringVar(&confFile, "config", "./master.json", "配置文件路径")
+	flag.StringVar(&confFile, "config", "./worker.json", "配置文件路径")
 	flag.Parse()
 }
 
@@ -30,7 +30,27 @@ func main() {
 	initEnv()  // 初始化环境
 
 	//读取配置文件到全局变量
-	if err = master.InitConfig(confFile); err != nil {
+	if err = worker.InitConfig(confFile); err != nil {
+		goto ERR
+	}
+
+	//服务注册
+	if err = worker.InitRegister(); err != nil {
+		goto ERR
+	}
+
+	//任务Watcher
+	if err = worker.InitJobWatcher(); err != nil {
+		goto ERR
+	}
+
+	//任务调度
+	if err = worker.InitScheduler(); err != nil {
+		goto ERR
+	}
+
+	//日志转储
+	if err = worker.InitLogSink(); err != nil {
 		goto ERR
 	}
 
