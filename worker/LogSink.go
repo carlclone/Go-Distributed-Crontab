@@ -11,7 +11,7 @@ import (
 /*
 疑问
 
-Append里的写入channel的select写法, 队列满了则走default吗
+Append里的写入channel的select写法, 队列满了则走default吗 : 没错
 */
 
 type LogSink struct {
@@ -27,29 +27,29 @@ var (
 
 //批量写入日志到mongodb
 func (logSink *LogSink) saveLogs(batch *common.LogBatch) {
-
+	logSink.logCollection.InsertMany(context.TODO(), batch.Logs)
 }
 
 func (logSink *LogSink) writeLoop() {
 	var (
 		log             *common.JobLog
-		logBatch        *common.LogBatch
-		autoCommitTimer *time.Timer      // ?
-		timeoutBatch    *common.LogBatch // ?
+		logBatch        *common.LogBatch //正常队列 (满了才提交)
+		autoCommitTimer *time.Timer      // 自动提交队列
+		timeoutBatch    *common.LogBatch // 超时队列
 	)
 
 	for {
 		select {
 		case log = <-logSink.logChannel:
-			// TODO; process log
 			if logBatch == nil {
 				logBatch = &common.LogBatch{}
 
 				//设定超时自动提交
 				autoCommitTimer = time.AfterFunc(
 					time.Duration(G_config.JobLogCommitTimeout)*time.Millisecond,
+					//为什么要返回一个func()变量 :  参数要求是func(){}类型的 , 因此通过函数生产一个func(){}函数 , 并保存logBatch到另一个作用域,不受影响
 					func(batch *common.LogBatch) func() {
-						return func() { //为什么要返回一个func()变量
+						return func() {
 							logSink.autoCommitChannel <- batch
 						}
 					}(logBatch), //这里是指针吧 , 如果被清空了? 那指针就不相等了
@@ -61,14 +61,18 @@ func (logSink *LogSink) writeLoop() {
 			//如果满了则发送到MongoDB
 			if len(logBatch.Logs) >= G_config.JobLogBatchSize {
 				//发日志
+				logSink.saveLogs(logBatch)
 
 				//清空batch桶 , 可以构造一个桶的数据结构 , 发送的时候自动清空
+				logBatch = nil
 				//取消自动提交定时器
+				autoCommitTimer.Stop()
 			}
 
 		case timeoutBatch = <-logSink.autoCommitChannel:
 			if timeoutBatch != logBatch {
 				//pass , 否则就存了两份log了
+				continue
 			}
 			logSink.saveLogs(timeoutBatch)
 			logBatch = nil
