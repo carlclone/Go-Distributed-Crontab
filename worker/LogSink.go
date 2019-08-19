@@ -12,6 +12,7 @@ import (
 疑问
 
 Append里的写入channel的select写法, 队列满了则走default吗 : 没错
+context.TODO() 上下文的疑惑
 */
 
 type LogSink struct {
@@ -47,7 +48,7 @@ func (logSink *LogSink) writeLoop() {
 				//设定超时自动提交
 				autoCommitTimer = time.AfterFunc(
 					time.Duration(G_config.JobLogCommitTimeout)*time.Millisecond,
-					//为什么要返回一个func()变量 :  参数要求是func(){}类型的 , 因此通过函数生产一个func(){}函数 , 并保存logBatch到另一个作用域,不受影响
+					//为什么要返回一个func()变量 :  参数要求是func(){}类型的 , 因此通过函数生产一个func(){}函数变量 , 以保存logBatch到另一个作用域,不受影响
 					func(batch *common.LogBatch) func() {
 						return func() {
 							logSink.autoCommitChannel <- batch

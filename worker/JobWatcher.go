@@ -53,3 +53,11 @@ func (jobMgr *JobWatcher) watchJobs() (err error) {
 
 	return
 }
+
+func (jobMgr *JobWatcher) watchKiller() {
+
+}
+
+func InitJobMgr() (err error) {
+
+}
