@@ -37,7 +37,7 @@ func InitJobLock(jobName string, kv clientv3.KV, lease clientv3.Lease) (jobLock 
 	return
 }
 
-func (jobMgr *JobWatcher) CreateJobLock(jobName string) (jobLock *JobLock) {
+func (jobMgr *JobMgr) CreateJobLock(jobName string) (jobLock *JobLock) {
 	jobLock = InitJobLock(jobName, jobMgr.kv, jobMgr.lease)
 	return
 }

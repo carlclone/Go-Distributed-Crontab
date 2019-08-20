@@ -8,7 +8,7 @@ import (
 )
 
 // Responsibility : listen for job changes and push change event to scheduler
-type JobWatcher struct {
+type JobMgr struct {
 	client  *clientv3.Client
 	kv      clientv3.KV
 	lease   clientv3.Lease
@@ -17,11 +17,11 @@ type JobWatcher struct {
 
 var (
 	// single instance
-	G_jobMgr *JobWatcher
+	G_jobMgr *JobMgr
 )
 
 //获取etcd中任务列表和监听任务的变化并更新到worker中
-func (jobMgr *JobWatcher) watchJobs() (err error) {
+func (jobMgr *JobMgr) watchJobs() (err error) {
 	var (
 		getResp *clientv3.GetResponse
 		kvpair  *mvccpb.KeyValue
@@ -54,7 +54,7 @@ func (jobMgr *JobWatcher) watchJobs() (err error) {
 	return
 }
 
-func (jobMgr *JobWatcher) watchKiller() {
+func (jobMgr *JobMgr) watchKiller() {
 
 }
 
