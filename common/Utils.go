@@ -2,7 +2,9 @@ package common
 
 import (
 	"encoding/json"
+	"github.com/gorhill/cronexpr"
 	"strings"
+	"time"
 )
 
 func ExtractWorkerIP(regKey string) string {
@@ -18,5 +20,24 @@ func UnpackJob(value []byte) (ret *Job, err error) {
 		return
 	}
 	ret = job
+	return
+}
+
+func BuildReadyJob(job *Job) (readyJob *ReadyJob, err error) {
+	var (
+		expr *cronexpr.Expression
+	)
+
+	//生成表达式实例
+	if expr, err = cronexpr.Parse(job.CronExpr); err != nil {
+		return
+	}
+
+	//生成下次执行时间
+	readyJob = &ReadyJob{
+		Job:      job,
+		Expr:     expr,
+		NextTime: expr.Next(time.Now()),
+	}
 	return
 }

@@ -12,3 +12,9 @@ type JobEvent struct {
 	EventType int
 	Job       *Job
 }
+
+const (
+	JOB_EVENT_SAVE = 1 // 保存任务事件
+	JOB_EVENT_DEL  = 2 // 删除任务事件
+	JOB_EVENT_KILL = 3 // 强杀任务事件
+)

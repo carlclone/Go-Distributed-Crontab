@@ -14,17 +14,17 @@ var (
 	G_executor *Executor
 )
 
-func (executor *Executor) ExecuteJob(info *common.JobExecuteInfo) {
+func (executor *Executor) ExecuteJob(info *common.JobExecutingInfo) {
 	go func() {
 		var (
 			cmd     *exec.Cmd
 			err     error
 			output  []byte
-			result  *common.JobExecuteResult
+			result  *common.JobExecutionResult
 			jobLock *JobLock
 		)
 
-		result = &common.JobExecuteResult{
+		result = &common.JobExecutionResult{
 			ExecuteInfo: info,
 			Output:      make([]byte, 0),
 		}
