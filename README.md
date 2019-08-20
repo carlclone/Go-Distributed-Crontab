@@ -68,7 +68,7 @@ availability design (leader election)
 
 上下文的使用
 
-线程和协程的关系 , Processor M Goroutine的关系
+线程和协程的关系 n:m , Processor, M, Goroutine的关系
 
 runtime.GOMAXPROCS(runtime.NumCPU())的作用
 
@@ -81,3 +81,4 @@ etcd的集群和搭建, kv , lease租约概念 , put兼具新增和更新 , 更�
 go和协程的调试技巧 
 
 mongodb和go的mongo库的使用总结
+
