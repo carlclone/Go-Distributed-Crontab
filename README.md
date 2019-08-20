@@ -56,3 +56,28 @@ availability design (leader election)
 - mongoDB
 - golang
 - cronexpr,etcd库
+
+
+## 遇到的难点
+
+日志写入的改进 , 并发问题
+
+协程的调试
+
+服务器机器时间不同步导致的锁抢占机会不均等
+
+上下文的使用
+
+线程和协程的关系 , Processor M Goroutine的关系
+
+runtime.GOMAXPROCS(runtime.NumCPU())的作用
+
+用到的库ioutil , time , strconv , string, json , http , etcd
+
+etcd的集群和搭建, kv , lease租约概念 , put兼具新增和更新 , 更新的prekv会有值
+
+杀任务还没写
+
+go和协程的调试技巧 
+
+mongodb和go的mongo库的使用总结
