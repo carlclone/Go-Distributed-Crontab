@@ -20,13 +20,13 @@ func (executor *Executor) ExecuteJob(info *common.JobExecutingInfo) {
 			cmd     *exec.Cmd
 			err     error
 			output  []byte
-			result  *common.JobExecutionResult
+			result  *common.JobExecutedResult
 			jobLock *JobLock
 		)
 
-		result = &common.JobExecutionResult{
-			ExecuteInfo: info,
-			Output:      make([]byte, 0),
+		result = &common.JobExecutedResult{
+			ExecutingInfo: info,
+			Output:        make([]byte, 0),
 		}
 
 		jobLock = G_jobMgr.CreateJobLock(info.Job.Name)

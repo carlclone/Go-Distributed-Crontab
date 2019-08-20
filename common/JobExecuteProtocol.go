@@ -16,13 +16,13 @@ type JobExecutingInfo struct {
 }
 
 // 任务执行结果
-type JobExecutionResult struct {
-	ExecuteInfo *JobExecutingInfo // 执行状态
-	Output      []byte            // 脚本输出
-	Err         error             // 脚本错误原因
-	StartTime   time.Time         // 启动时间
-	EndTime     time.Time         // 结束时间
-	TryLockTime time.Time
+type JobExecutedResult struct {
+	ExecutingInfo *JobExecutingInfo // 执行状态
+	Output        []byte            // 脚本输出
+	Err           error             // 脚本错误原因
+	StartTime     time.Time         // 启动时间
+	EndTime       time.Time         // 结束时间
+	TryLockTime   time.Time
 }
 
 type ReadyJob struct {
