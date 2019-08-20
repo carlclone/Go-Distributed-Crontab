@@ -26,6 +26,7 @@ services:
       - etcd
       - mongodb
 
+  # etcd和mongodb要暴露到公网,给其他worker连接
   etcd:
     image:etcd
 #    ports: []
