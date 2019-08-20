@@ -1,0 +1,43 @@
+# etcd容器一个
+# mongodb容器一个
+# link backend网络一个
+# link frontend网络一个
+
+version: "3"
+
+services:
+  master:
+    build:./master/.
+    volumes:
+      - ./master:/master
+    ports:
+      - "8070:8070"
+    links:
+      - etcd
+      - mongodb
+    networks:
+      - front-tier
+
+  worker:
+    build:./worker/.
+    volumes:
+      - ./worker:/worker
+    links:
+      - etcd
+      - mongodb
+
+  etcd:
+    image:etcd
+#    ports: []
+#    networks:
+#      -
+  mongodb:
+    image: mongodb
+#    volumes:
+#      -
+
+#volumes:
+
+networks:
+  front-tier:
+#  back-tier:
