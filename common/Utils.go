@@ -1,6 +1,7 @@
 package common
 
 import (
+	"context"
 	"encoding/json"
 	"github.com/gorhill/cronexpr"
 	"strings"
@@ -48,4 +49,25 @@ func BuildJobEvent(eventType int, job *Job) (jobEvent *JobEvent) {
 		EventType: eventType,
 		Job:       job,
 	}
+}
+
+// 从etcd的key中提取任务名
+// /cron/jobs/job10抹掉/cron/jobs/
+func ExtractJobName(jobKey string) string {
+	return strings.TrimPrefix(jobKey, JOB_SAVE_DIR)
+}
+
+// 从 /cron/killer/job10提取job10
+func ExtractKillerName(killerKey string) string {
+	return strings.TrimPrefix(killerKey, JOB_KILLER_DIR)
+}
+
+func BuildJobExecuteInfo(jobSchedulePlan *ReadyJob) (jobExecuteInfo *JobExecutingInfo) {
+	jobExecuteInfo = &JobExecutingInfo{
+		Job:      jobSchedulePlan.Job,
+		PlanTime: jobSchedulePlan.NextTime, // 计算调度时间
+		RealTime: time.Now(),               // 真实调度时间
+	}
+	jobExecuteInfo.CancelCtx, jobExecuteInfo.CancelFunc = context.WithCancel(context.TODO())
+	return
 }

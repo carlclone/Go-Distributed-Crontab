@@ -1,7 +1,6 @@
 package worker
 
 import (
-	"fmt"
 	"github.com/carlclone/Go-Distributed-Crontab/common"
 	"time"
 )
@@ -35,9 +34,11 @@ func (scheduler *PlaneScheduler) TryStartJob(readyJob *common.ReadyJob) {
 		return
 	}
 
+	jobExecutingInfo = common.BuildJobExecuteInfo(readyJob)
+
 	scheduler.jobExecutingList[readyJob.Job.Name] = jobExecutingInfo
 
-	fmt.Println("尝试执行任务:", jobExecutingInfo.Job.Name)
+	//fmt.Println("尝试执行任务:", jobExecutingInfo.Job.Name)
 	G_executor.ExecuteJob(jobExecutingInfo)
 }
 

@@ -35,9 +35,14 @@ func main() {
 	}
 
 	//worker管理 , 目前只有查功能
-	//if err = master.InitWorkerMgr(); err != nil {
-	//	goto ERR
-	//}
+	if err = master.InitWorkerMgr(); err != nil {
+		goto ERR
+	}
+
+	// 日志管理器
+	if err = master.InitLogMgr(); err != nil {
+		goto ERR
+	}
 
 	//增删改查,管理任务
 	if err = master.InitJobMgr(); err != nil {

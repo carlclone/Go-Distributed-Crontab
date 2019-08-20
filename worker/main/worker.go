@@ -39,8 +39,12 @@ func main() {
 		goto ERR
 	}
 
-	//任务Watcher
-	if err = worker.InitJobWatcher(); err != nil {
+	//日志转储
+	if err = worker.InitLogSink(); err != nil {
+		goto ERR
+	}
+
+	if err = worker.InitExecutor(); err != nil {
 		goto ERR
 	}
 
@@ -49,10 +53,12 @@ func main() {
 		goto ERR
 	}
 
-	//日志转储
-	if err = worker.InitLogSink(); err != nil {
+	//任务Watcher
+	if err = worker.InitJobMgr(); err != nil {
 		goto ERR
 	}
+
+	fmt.Println("worker started")
 
 	// 正常退出
 	for {

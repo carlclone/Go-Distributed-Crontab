@@ -37,8 +37,8 @@ func InitApiServer() (err error) {
 	mux.HandleFunc("/job/delete", handleJobDelete)
 	mux.HandleFunc("/job/list", handleJobList)
 	//mux.HandleFunc("/job/kill", handleJobKill)
-	//mux.HandleFunc("/job/log", handleJobLog)
-	//mux.HandleFunc("/worker/list", handleWorkerList)
+	mux.HandleFunc("/job/log", handleJobLog)
+	mux.HandleFunc("/worker/list", handleWorkerList)
 
 	// 静态文件目录
 	staticDir = http.Dir(G_config.WebRoot)

@@ -29,6 +29,7 @@ func (executor *Executor) ExecuteJob(info *common.JobExecutingInfo) {
 			Output:        make([]byte, 0),
 		}
 
+		//TODO;如何调试协程?
 		jobLock = G_jobMgr.CreateJobLock(info.Job.Name)
 
 		//随机睡眠0-1秒 , 保证每台机器上的协程都有随机机会抢到锁 , 而不会因为时间不同步问题被一台机器一直抢到
